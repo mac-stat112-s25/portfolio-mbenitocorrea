@@ -3,3 +3,41 @@ title: "Bivariate Viz"
 ---
 
 Use this file to generate a professional looking **bivariate** visualization.  The visualization will not perfect the first time but you are expected to improve it throughout the semester especially after covering advanced topics such as effective viz.
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+# Import data
+weather <- read.csv("https://mac-stat.github.io/data/weather_3_locations.csv") |> 
+  mutate(date = as.Date(date))  
+
+```
+
+```{r}
+#create sub data set for only Wollongong location
+woll <- weather |>
+  filter(location == "Wollongong") |> 
+  mutate(date = as.Date(date))  
+
+```
+
+```{r}
+# Proportional bars
+# position = "fill" refers to filling the frame, nothing to do with the color-related fill
+#| fig-cap: For days that it doens't rain today, there are less days where it doens't rain tomorrow. For  days where it does rain today, there are more days where it does rain tomorrow. 
+
+
+
+
+#| fig-alt: This is bar chart with the x axis being 'rain today' and the yaxis being 'count'. There are three bars -- yes, no and NA, for the rain today variable. The bars are divided into different colors based on the proportion of days that it rains tomorrow. The bar for 'no' rain today, has roughly 20% of corresponding data points that say that it will rain tomorrow, and roughly 80% of corresponding data points that say that it will not rain tomorrow. The bar for 'yes' rain today has 50% of corresponding data points that say it will rain tomorrow, and 50% of corresponding data points that say it will not rain tomorrow. The third column, 'NA' for rain today, has 12.5% of correesponding corresponding data points that say it will not rain tomorrow and about 5% of corresponding data points that say it will rain tomorrow.
+
+
+ggplot(woll, aes(x = raintoday, fill = raintomorrow)) + 
+  geom_bar(position = "fill") +
+   labs(x = "Rating", y = "Proportion")+
+  scale_fill_viridis_d()  
+```
+

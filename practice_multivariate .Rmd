@@ -1,0 +1,84 @@
+---
+title: "practice"
+author: "maria"
+date: "2025-02-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+library(tidyverse)
+
+# Import data
+weather <- read.csv("https://mac-stat.github.io/data/weather_3_locations.csv") |> 
+  mutate(date = as.Date(date))  
+
+# Check out the first 6 rows
+head(weather)
+# What are the units of observation?
+#dates
+
+# How many data points do we have? 
+nrow(weather)
+#2367
+
+# What type of variables do we have?
+#categorical and quant
+```
+Example 1
+Construct a plot that allows us to examine how temp3pm varies.
+```{r}
+ggplot(weather, aes(x = temp3pm)) +
+  geom_density()  +
+  theme_minimal()
+```
+
+Example 2
+Construct 3 plots that address the following research question:
+
+How do afternoon temperatures (temp3pm) differ by location?
+```{r}
+# Plot 1 (no facets & starting from a density plot of temp3pm)
+ggplot(weather, aes(x = temp3pm, fill = location)) + 
+  geom_density()
+```
+```{r}
+# Plot 2 (no facets or densities)
+ggplot(weather, aes(x = temp3pm, fill = location)) + 
+  geom_bar()
+```
+
+```{r}
+# Plot 3 (facets)
+# facet_wrap separates the density plots into "facets" for each historical group
+# What does facet_wrap do?!
+ggplot(weather, aes(x = temp3pm, fill = location)) +
+  geom_density() +
+  scale_fill_manual(values = c("blue", "purple", "red")) +
+  facet_wrap(~ location)
+
+ggplot(weather, aes(x = temp3pm, fill = location)) +
+  geom_bar()  +
+  facet_wrap(~ location)
+
+```
+```{r}
+# Don't worry about the syntax (we'll learn it soon)
+woll <- weather |>
+  filter(location == "Wollongong") |> 
+  mutate(date = as.Date(date))  
+```
+
+```{r}
+
+```
+

@@ -3,3 +3,84 @@ title: "Bivariate Viz"
 ---
 
 Use this file for practice with the **bivariate viz** in-class activity.  Refer to the class website for details.
+
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+# Load data
+elections <- read.csv("https://mac-stat.github.io/data/election_2020_county.csv")
+
+# Check it out
+head(elections)
+```
+##Exercise 0: Review
+
+#Part a
+How many, or roughly what percent, of the 3000+ counties did the Republican candidate win in 2020?
+
+Take a guess.  
+  *43%
+  
+Then make a plot of the winner variable.
+```{r}
+ggplot(elections, aes(x = winner_20)) +
+  geom_bar() +
+  labs(x = "winner in 2020")
+```
+
+Then discuss what follow-up questions you might have (and that our data might help us answer).
+ * A follow up question I have is which counties voted republican (and how many?)
+ 
+##Exercise 1: Quantitative vs Quantitative Intuition Check
+```{r}
+ggplot(elections, aes(x = repub_pct_16, y = repub_pct_20)) +
+  geom_point() 
+
+```
+
+
+#Exercise 2: 2 Quantitiative Variables
+```{r}
+# Set up the plotting frame
+# How does this differ than the frame for our histogram of repub_pct_20 alone?
+# This differs because now there are two categorical variables.
+ggplot(elections, aes(y = repub_pct_20, x = repub_pct_16))
+```
+
+```{r}
+# Add a layer of points for each county
+# Take note of the geom!
+ggplot(elections, aes(y = repub_pct_20, x = repub_pct_16)) +
+  geom_point()
+
+
+```
+```{r}
+# Change the shape of the points
+# What happens if you change the shape to another number? 
+# Changing the number changes the shapes of the data points
+ggplot(elections, aes(y = repub_pct_20, x = repub_pct_16)) +
+  geom_point(shape = 5)
+```
+```{r}
+# YOU TRY: Modify the code to make the points "orange"
+# NOTE: Try to anticipate if "color" or "fill" will be useful here. Then try both.
+ggplot(elections, aes(y = repub_pct_20, x = repub_pct_16)) +
+  geom_point(color = "orange")
+```
+ 
+
+```{r}
+# Add a layer that represents each county by the state it's in
+# Take note of the geom and the info it needs to run!
+ggplot(elections, aes(y = repub_pct_20, x = repub_pct_16)) +
+  geom_text(aes(label = state_abbr))
+```
+
+##Exercise 3: Reflect
+  *There is a strong postive relationship between republicican support in 2016 and the same in 2020. 
+  
+##Exercise 4: Visualizing trend 

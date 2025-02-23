@@ -3,3 +3,52 @@ title: "Spatial Viz"
 ---
 
 Use this file to generate a professional looking **spatial** visualization.  The visualization will not perfect the first time but you are expected to improve on it throughout the semester especially after covering advanced topics such as effective viz.
+
+#This visulization is from HW3.
+
+```{r}
+# Load package needed to change color
+library(gplots) 
+
+# Load the leaflet package
+library(leaflet)
+```
+
+```{r}
+#Make favorite places data set
+favorite_place <- tribble(
+  ~place, ~longitude, ~latitude, ~favorite,
+  "Lake Harriet", 44.928851856625954, -93.3076662863296, "yes",
+  "Georgetown", 38.9097, -77.0654, "yes",
+  "Southdale Library", 44.8756, -93.32008, "yes",
+  "Macalester College", 44.9379, -93.1685, "no",
+  "Stone Arch Bridge", 44.9807, -93.2537, "no",
+  "Downtown Minneapolis", 44.9765, -93.2761, "no",
+  "Linden Hills Library", 44.92515, -93.3165, "no",
+  "Barnes & Noble", 44.877578, -93.32384, "no"
+)
+```
+
+```{r}
+ #| fig-cap: This is a map of my favorite places, most of which are in Minneapolis, Minneosta and St. Paul, Minnesota. By Maria Benito, updated on February 19, 2025. Data source: created by myself.
+ #| fig-alt: This is a world map which can be zoomed in to see my favorite locations. My favorite locations are marked by a red circle and are: Georgetown in Washington D.C.; Southdale Library, Linden Hills Library, Barnes and Noble, and Lake Harriet in Minneapolis, MN.; Macalester Colelge, in St. Paul, MN. Minneapolis and St. Paul are very close to eachother, and Washington D.C. is east of them and very far away.
+# Just a plotting frame
+leaflet(data = favorite_place)
+
+# longitude and latitude refer to the variables in our data
+leaflet(data = favorite_place) |> 
+  addTiles() |> 
+  addMarkers(lng = ~latitude, lat = ~longitude)
+
+# Since we named them "longitude" and "latitude", the function
+# automatically recognizes these variables. No need to write them!
+leaflet(data = favorite_place) |> 
+  addTiles() |> 
+  addMarkers()
+
+# We can add colored circles instead of markers at each location
+leaflet(data = favorite_place) |> 
+  addTiles() |> 
+  addCircles(color = col2hex("red"), label = ~place, lng = ~latitude, lat = ~longitude)
+```
+

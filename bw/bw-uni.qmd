@@ -3,3 +3,28 @@ title: "Univariate Viz"
 ---
 
 Use this file to generate a professional looking **univariate** visualization. The visualization will not perfect the first time but you are expected to improve on it throughout the semester especially after covering advanced topics such as effective viz.
+
+```{r}
+# Load the package
+library(tidyverse)
+```
+
+```{r}
+# Import data
+hikes <- read.csv("https://mac-stat.github.io/data/high_peaks.csv")
+```
+
+```{r}
+ #| fig-cap: Moderate hikes are the most common, easy hikes are the second most common, and difficult hikes are the least common. By Maria Benito Correa, updated Febrauray 21, 2025. Data source: https://mac-stat.github.io/data 
+ #| fig-alt:This is a bar chart of hikes with three different ratings. Ratings are on the x-axis and number of hikes is on the y axis. In order from left to right, the bars are difficult, easy, and moderate. There are around 8 hikes rated difficult. There are aroun 11 hikes rated easy. There are around 27 hikes rated moderate. 
+ 
+ggplot(hikes, aes(x = rating)) +
+  geom_bar(fill = "purple")  +
+  labs(x = "Rating", y = "Number of hikes", title = "Ratings of Hikes", subtitle = "How many hikes are easy, moderate, or difficult?") +
+  theme_minimal() + 
+  scale_fill_viridis_d()+
+  theme(axis.text.x = element_text(size=16), axis.text.y = element_text(size=16))
+```
+
+
+

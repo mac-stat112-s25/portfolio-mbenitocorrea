@@ -3,3 +3,79 @@ title: "Mulivariate Viz"
 ---
 
 Use this file for practice with the **mulivariate viz** in-class activity.  Refer to the class website for details.
+
+```{r}
+# Import and check out data
+education <- read.csv("https://mac-stat.github.io/data/sat.csv")
+head(education)
+```
+##Exercise 1: SAT scores
+#Part a: Construct a plot of how the average sat scores vary from state to state. (Just use 1 variable – sat not State!)
+```{r}
+ggplot(education, aes(x = sat)) +
+  geom_histogram()  
+```
+#Part b: Summarize your observations from the plot. Comment on the basics: range, typical outcomes, shape. (Any theories about what might explain this non-normal shape?)
+```{r}
+#scores around 900 are the most common. 
+#scores on the extremes are the least common
+```
+
+##Exercise 2: SAT Scores vs Per Pupil Spending & SAT Scores vs Salaries
+#Part a
+```{r}
+# Construct a plot of sat vs expend
+# Include a "best fit linear regression model" (HINT: method = "lm")
+
+ggplot(education, aes(y = sat, x = expend)) +
+  geom_point() + 
+geom_smooth(method = "lm", se = FALSE) 
+```
+#Part b: What are the relationship trends between SAT scores and spending? Is there anything that surprises you?
+```{r}
+#I am suprised that score goes down as expenditure increases.
+```
+
+##Exercise 3: SAT Scores vs Per Pupil Spending and Teacher Salaries
+#Construct one visualization of the relationship of sat with salary and expend. HINT: Start with just 2 variables and tweak that code to add the third variable. Try out a few things!
+```{r}
+#expend and SAT
+ggplot(education, aes(y = sat, x = expend)) +
+  geom_point() 
+
+#expend, SAT, and salary
+ggplot(education, aes(y = sat, x = expend, size = salary)) +
+  geom_point() 
+```
+##Exercise 4: Another way to Incorporate Scale
+#It can be tough to distinguish color scales and size scales for quantitative variables. Another option is to discretize a quantitative variable, or basically cut it up into categories.
+#Construct the plot below. Check out the code and think about what’s happening here. What happens if you change “2” to “3”?
+```{r}
+ggplot(education, aes(y = sat, x = salary, color = cut(expend, 2))) + 
+  geom_point() + 
+  geom_smooth(se = FALSE, method = "lm")
+
+#When we change 2 to 3, the data gets cut into 3 different sections instead of 2
+```
+
+##Exercise 5: Finally an Explanation
+#Part a: Build a univariate viz of fracCat to better understand how many states fall into each category, fracCat. 
+```{r}
+ggplot(education, aes(x = fracCat )) +
+  geom_bar()  
+```
+
+#Part b: Build 2 bivariate visualizations that demonstrate the relationship between sat and fracCat. What story does your graphic tell and why does this make contextual sense?
+```{r}
+#in both, fracCat varies by color
+#histogram
+ggplot(education, aes(x = sat, fill = fracCat)) + 
+  geom_histogram(position = "fill")
+
+
+#density 
+ggplot(education, aes(x = sat, fill = fracCat)) +
+  geom_density() +
+  scale_fill_manual(values = c("blue", "purple", "red"))
+```
+

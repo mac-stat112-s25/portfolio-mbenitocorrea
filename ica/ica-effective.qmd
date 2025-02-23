@@ -1,0 +1,35 @@
+---
+title: "ica-effective"
+format: html
+---
+
+##Exercise 1: Professionalism
+```{r}
+# Load tidyverse package for plotting and wrangling
+library(tidyverse)
+library(gplots)
+
+# Import the data
+weather <- read.csv("https://mac-stat.github.io/data/weather_3_locations.csv") |> 
+  mutate(date = as.Date(date))
+```
+```{r}
+ggplot(weather, aes(y = temp3pm, x = temp9am, color = location)) + 
+  geom_point()
+```
+#Part a
+```{r}
+ggplot(weather, aes(y = temp3pm, x = temp9am, color = location)) + 
+  geom_point() + 
+  labs(x = "Temperture at 9 a.m.", y = "Temperature at 3 p.m.", title = "Temperature at 9 a.m. vs Temperature at 3 p.m.", color = "Cities in Austrailia")  
+```
+#Part b
+```{r}
+#| fig-cap: Temperature at 9 a.m. vs Temperature at 3 p.m.
+
+ggplot(weather, aes(y = temp3pm, x = temp9am, color = location)) + 
+  geom_point() + 
+  labs(x = "Temperture at 9 a.m.", y = "Temperture at 3 p.m.", color = "Cities in Austrailia")  
+```
+
+

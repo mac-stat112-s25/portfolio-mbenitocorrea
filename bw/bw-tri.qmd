@@ -3,3 +3,40 @@ title: "Trivariate Viz"
 ---
 
 Use this file to generate a professional looking **trivariate** visualization.  The visualization will not perfect the first time but you are expected to improve on it throughout the semester especially after covering advanced topics such as effective viz.
+
+#This visulization is from HW2. 
+
+```{r}
+# Load packages we'll need: tidyverse, mosaic, fivethirtyeight (mosaicData will be loaded automatically when loading the mosaic package)'
+
+library(tidyverse)
+library(mosaic)
+library(fivethirtyeight)
+```
+
+```{r}
+# Create the daily_births dataset
+data("Birthdays")
+daily_births <- Birthdays |> 
+  group_by(date) |> 
+  summarize(births = sum(births)) |> 
+  mutate(year = year(date), 
+         month = month(date, label = TRUE),
+         day_of_month = mday(date),
+         day_of_week = wday(date, label = TRUE))
+```
+
+
+```{r}
+#Construct a plot of births over time. 
+ #| fig-cap: Births per day dip from about 1971 to 1975, and rise slightly from 1976 onwards. There tend to be really low births in the months January - April. Highest numbers of births tend to happen August - November. By Maria Benito, updated Febraury 19, 2025. Data source: https://github.com/fivethirtyeight/data/tree/master/births
+ #| fig-alt: This is a scatter plot of year (1969 - 1991) vs births. Daily births dip from about 1971 to 1975, and rise slightly from 1976 onwards. They dip from about 11,500 births per day to 10,1000 births per day and then rise steadily until the last year we have data for, 1961, where daily births are around 13,000.
+
+
+ggplot(daily_births, aes(y = births, x = year, color = month)) +
+  geom_point() +
+  labs(x = "Year", y = "Births per Day", title = "Births per Day vs Year", subtitle = "How Births per Day Differ Across Months Over Several Years") +
+   scale_fill_viridis_d()  +
+    theme(axis.text.x = element_text(size=16), axis.text.y = element_text(size=16))
+```
+

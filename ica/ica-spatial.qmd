@@ -3,3 +3,208 @@ title: "Spatial Viz"
 ---
 
 Use this file for practice with the **spatial viz** in-class activity.  Refer to the class website for details.
+
+```{r}
+install.packages("leaflet")
+library("leaflet")
+install.packages("gplots")
+library("gplots")
+install.packages("tidyverse")
+library("tidyverse")
+install.packages("rnaturalearthhires")
+#library("rnaturalearthhires")
+install.packages("maps")
+library("maps")
+install.packages("sf")
+library("sf")
+install.packages("RColorBrewer")
+library("RColorBrewer")
+install.packages("devtools")
+library("devtools")
+```
+
+##Exercise 1: A leaflet with markers / points
+```{r}
+fave_places <- read.csv("https://hash-mac.github.io/stat112site-s25/data/our_fave_places.csv")
+
+# Check it out
+head(fave_places)
+```
+#Part a
+```{r}
+# Load the leaflet package
+library(leaflet)
+
+# Just a plotting frame
+leaflet(data = fave_places)
+```
+```{r}
+# Now what do we have?
+leaflet(data = fave_places) |> 
+  addTiles()
+```
+```{r}
+# Now what do we have?
+# longitude and latitude refer to the variables in our data
+leaflet(data = fave_places) |> 
+  addTiles() |> 
+  addMarkers(lng = ~longitude, lat = ~latitude)
+```
+
+```{r}
+# Since we named them "longitude" and "latitude", the function
+# automatically recognizes these variables. No need to write them!
+leaflet(data = fave_places) |> 
+  addTiles() |> 
+  addMarkers()
+```
+##Exercise 2: Details
+```{r}
+# Load package needed to change color
+library(gplots)
+
+# We can add colored circles instead of markers at each location
+leaflet(data = fave_places) |> 
+  addTiles() |> 
+  addCircles(color = col2hex("red"))
+```
+```{r}
+# We can change the background
+# Mark locations with yellow dots
+# And connect the dots, in their order in the dataset, with green lines
+# (These green lines don't mean anything here, but would if this were somebody's travel path!)
+leaflet(data = fave_places) |>
+  addProviderTiles("USGS") |>
+  addCircles(weight = 10, opacity = 1, color = col2hex("yellow")) |>
+  addPolylines(
+    lng = ~longitude,
+    lat = ~latitude,
+    color = col2hex("green")
+  )
+```
+##Exercise 3
+```{r}
+# Import starbucks location data
+starbucks <- read.csv("https://mac-stat.github.io/data/starbucks.csv")
+```
+
+```{r}
+# Don't worry about the syntax
+starbucks_mn <- starbucks |>     
+  filter(Country == "US", State.Province == "MN")
+```
+
+#Create a leaflet map of the Starbucks locations in Minnesota. Keep it simple – go back to Exercise 1 for an example.
+```{r}
+leaflet(data = starbucks_mn) |> 
+  addTiles()  |> 
+  addMarkers()
+```
+## Exercise 3: Let’s start with the ggplot() tools we already know. Construct a scatterplot of all starbucks locations, not just those in Minnesota, with:
+  *Latitude and Longitude coordinates (which goes on the y-axis?!)
+  *Make the points transparent (alpha = 0.2) and smaller (size = 0.2)
+
+```{r}
+ggplot(starbucks_mn, aes(y = Latitude, x = Longitude)) +
+  geom_point(alpha=0.2, size = 0.2)
+```
+
+##Exercise 4: Exercise 4: Adding a country-level background. 
+#Part a
+```{r}
+# Load the package
+install.packages("rnaturalearth")
+library(rnaturalearth)
+
+# Get info about country boundaries across the world
+# in a "sf" or simple feature format
+world_boundaries <- ne_countries(returnclass = "sf")
+```
+
+#Part b
+```{r}
+# What does this code produce?
+  *This code produces a world map
+# What geom are we using for the point map?
+ggplot(world_boundaries) + 
+  geom_sf()
+  *We are using geom simple feature
+```
+```{r}
+# Load package needed to change map theme
+library(mosaic)
+
+# Add a point for each Starbucks
+# NOTE: The Starbucks info is in our starbucks data, not world_boundaries
+# How does this change how we use geom_point?!
+ggplot(world_boundaries) + 
+  geom_sf() + 
+  geom_point(
+    data = starbucks,
+    aes(x = Longitude, y = Latitude),
+    alpha = 0.3, size = 0.2, color = "darkgreen"
+  ) +
+  theme_map()
+```
+#Part c: Summarize what you learned about Starbucks from this map --
+*I learned that Starbucks are concentrated in the northern hemisphere of the continent, with a few expception in Asia and Oceania. 
+
+##Exercise 5: Zooming in on some countries
+#Part a
+```{r}
+# We'll learn this syntax soon! Don't worry about it now.
+starbucks_cma <- starbucks |> 
+  filter(Country %in% c('CA', 'MX', 'US'))
+```
+
+```{r}
+cma_boundaries <- ne_states(
+  country = c("canada", "mexico", "united states of america"),
+  returnclass = "sf")
+
+```
+
+```{r}
+# Just the boundaries
+ggplot(cma_boundaries) + 
+  geom_sf()
+```
+
+```{r}
+# Add the points
+# And zoom in
+ggplot(cma_boundaries) + 
+  geom_sf() + 
+  geom_point(
+    data = starbucks_cma,
+    aes(x = Longitude, y = Latitude),
+    alpha = 0.3,
+    size = 0.2,
+    color = "darkgreen"
+  ) +
+  coord_sf(xlim = c(-179.14, -50)) +
+  theme_map()
+```
+##Exercise 6: A state and county-level map
+#Part a
+
+```{r}
+starbucks_midwest <- starbucks |> 
+  filter(State.Province %in% c("MN", "ND", "SD", "WI"))
+```
+
+```{r}
+# Load packages
+library(sf)
+library(maps)
+
+# Get the boundaries
+midwest_boundaries <- st_as_sf(
+  maps::map("county",
+            region = c("minnesota", "wisconsin", "north dakota", "south dakota"), 
+            fill = TRUE, plot = FALSE))
+
+# Check it out
+head(midwest_boundaries)
+```
+
