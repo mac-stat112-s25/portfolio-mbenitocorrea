@@ -12,6 +12,8 @@ library(gplots)
 
 # Load the leaflet package
 library(leaflet)
+library(dplyr)
+library(ggplot2)
 ```
 
 ```{r}

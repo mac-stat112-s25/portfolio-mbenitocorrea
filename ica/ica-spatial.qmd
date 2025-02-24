@@ -5,21 +5,21 @@ title: "Spatial Viz"
 Use this file for practice with the **spatial viz** in-class activity.  Refer to the class website for details.
 
 ```{r}
-install.packages("leaflet")
+
 library("leaflet")
-install.packages("gplots")
+
 library("gplots")
-install.packages("tidyverse")
+
 library("tidyverse")
-install.packages("rnaturalearthhires")
+
 #library("rnaturalearthhires")
-install.packages("maps")
+
 library("maps")
-install.packages("sf")
+
 library("sf")
-install.packages("RColorBrewer")
+
 library("RColorBrewer")
-install.packages("devtools")
+
 library("devtools")
 ```
 
@@ -113,7 +113,6 @@ ggplot(starbucks_mn, aes(y = Latitude, x = Longitude)) +
 #Part a
 ```{r}
 # Load the package
-install.packages("rnaturalearth")
 library(rnaturalearth)
 
 # Get info about country boundaries across the world
@@ -124,11 +123,11 @@ world_boundaries <- ne_countries(returnclass = "sf")
 #Part b
 ```{r}
 # What does this code produce?
-  *This code produces a world map
+  #This code produces a world map
 # What geom are we using for the point map?
 ggplot(world_boundaries) + 
   geom_sf()
-  *We are using geom simple feature
+  #We are using geom simple feature
 ```
 ```{r}
 # Load package needed to change map theme

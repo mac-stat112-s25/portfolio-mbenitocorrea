@@ -8,6 +8,8 @@ Use this file for practice with the **mulivariate viz** in-class activity.  Refe
 # Import and check out data
 education <- read.csv("https://mac-stat.github.io/data/sat.csv")
 head(education)
+
+library(ggplot2)
 ```
 ##Exercise 1: SAT scores
 #Part a: Construct a plot of how the average sat scores vary from state to state. (Just use 1 variable – sat not State!)
