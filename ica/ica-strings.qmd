@@ -1,0 +1,67 @@
+---
+title: "ica-strings"
+format: html
+---
+
+##Example 1
+#Consider the following data with string variables :
+```{r}
+library(tidyverse)
+
+classes <- data.frame(
+  sem        = c("SP2023", "FA2023", "SP2024"),
+  area       = c("History", "Math", "Anthro"),
+  enroll     = c("30 - people", "20 - people", "25 - people"),
+  instructor = c("Ernesto Capello", "Lori Ziegelmeier", "Arjun Guneratne")
+)
+
+classes
+```
+
+#Using only your intuition, use our str_ functions to complete the following. NOTE: You might be able to use other wrangling verbs in some cases, but focus on the new functions here.
+```{r}
+# Define a new variable "num" that adds up the number of characters in the area label
+str_length("area")
+```
+
+```{r}
+# Change the areas to "history", "math", "anthro" instead of "History", "Math", "Anthro"
+classes |> 
+mutate(area = str_to_lower(area))
+```
+
+```{r}
+# Create a variable that id's which courses were taught in spring
+classes |> 
+  mutate(spring=str_detect(sem, "SP"))
+```
+
+```{r}
+# Change the semester labels to "fall2023", "spring2024", "spring2023"
+classes |> 
+  mutate(sem = str_replace_all(sem, "SP", "spring")) |>
+  mutate(sem = str_replace_all(sem, "FA", "fall")) 
+```
+
+
+```{r}
+# In the enroll variable, change all e's to 3's (just because?)
+classes |> 
+  mutate(enroll = str_replace_all(enroll, "e", "3"))
+
+```
+
+```{r}
+# Use sem to create 2 new variables, one with only the semester (SP/FA) and 1 with the year
+classes |> 
+  mutate(semester = str_sub(sem, start=1L, end=2L))|>
+  mutate(year = str_sub(sem, start=3L, end=-1L))
+```
+
+##Example 4
+#In general, when we want to split a column into 2+ new columns, we can often use separate():
+```{r}
+classes |> 
+  separate(instructor, c("first", "last"), sep = " ")
+```
+

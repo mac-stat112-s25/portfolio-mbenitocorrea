@@ -1,0 +1,139 @@
+---
+title: "ica-dates"
+format: html
+---
+
+#load packages
+```{r}
+library(tidyverse)
+```
+
+#Load data
+```{r}
+penguins <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-07-28/penguins.csv')
+
+# Check it out
+head(penguins)
+```
+
+
+##Exercise 1: More Filtering
+#Part a
+```{r}
+# Create a dataset with just Adelie and Chinstrap using %in%
+# Pipe this into `count(species)` to confirm that you only have these 2 species
+penguins |> 
+   filter(species %in% c("Adelie", "Chinstrap")) |> 
+   count(species)
+
+```
+
+#Part b 
+```{r}
+#Notice that some of our penguins have missing (NA) data on some values:
+head(penguins)
+```
+
+```{r}
+#Suppose our research focus is just on body_mass_g. Two penguins are missing this info:
+
+# NOTE the use of is.na()
+penguins |> 
+  summarize(sum(is.na(body_mass_g))) 
+```
+```{r}
+#Let’s define a new dataset that removes these penguins:
+
+# NOTE the use of is.na()
+penguins_w_body_mass <- penguins |> 
+  filter(!is.na(body_mass_g))
+
+# Compare the number of penguins in this vs the original data
+nrow(penguins_w_body_mass)
+nrow(penguins)
+```
+
+```{r}
+#In the very rare case that we need complete information on every variable for the specific task at hand, we can use na.omit() to get rid of any penguin that’s missing info on any variable:
+
+penguins_complete <- penguins |> 
+  na.omit()
+
+#How many penguins did this eliminate?
+nrow(penguins_complete)
+nrow(penguins)
+```
+
+#Part c: Explain why we should only use na.omit() in extreme circumstances.
+#We should only use na.omit() in the rare cicumstance that we need every observation for every observation because if we have a missing observation for one variable that we need, in this case all of them, it will mess up the final numbers/there will be NA in the final output. 
+
+##Exercise 4: Dates
+#Part a
+
+
+#Load the package 
+```{r}
+library(lubridate)
+```
+
+```{r}
+# Get today's date
+as.Date(today())
+
+# Let's store this as "today" so we can work with it below
+today <- as.Date(today())
+
+# Check out the class of this object
+class(today)
+```
+
+#The lubridate package inside tidyverse contains functions that can extract various information from dates. For each, make a comment on what the function does
+```{r}
+year(today)
+#Tells you the year of the date we saved
+```
+```{r}
+month(today)
+#Tells you the month (numerical) of the date we saved
+```
+```{r}
+month(today, label = TRUE)
+#Tells you the name of the month of the date you saved out of all month names
+```
+
+```{r}
+# What does this number mean?
+week(today)
+
+#The number of the week in the year. we are in week 9.
+```
+
+```{r}
+yday(today)  # This is often called the "Julian day"
+
+#The number of the day in the year. we are on day 57.
+```
+```{r}
+wday(today, label = TRUE)
+
+#Tells us the name of the day of the week out of all days of the week. 
+```
+```{r}
+today < ymd("2024-02-14") 
+
+#Tells you if the date you saved is less than the date inputed in the code
+```
+
+#9.3 Exercises Part 2: Application
+
+#Load the package
+```{r}
+library(mosaic)
+```
+
+#Load the data
+```{r}
+data("Birthdays")
+head(Birthdays)
+```
+

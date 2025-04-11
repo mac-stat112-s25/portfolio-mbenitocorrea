@@ -1,0 +1,99 @@
+---
+title: "bw-exam1"
+format: html
+---
+##Grand research question: What does food consumption in each category look like by country?
+
+#load the packages here. if they are not installed, install in console. 
+```{r}
+library(tidytuesdayR)
+library(tidyverse)
+library(leaflet)
+```
+#Get data 
+```{r}
+#get data from the one specific date that we want to be able to answer the question
+tuesdata<-tt_load('2020-02-18')
+#pull food consumption data specifically
+fc<-tuesdata$food_consumption
+```
+
+#Understand the data 
+```{r}
+head(fc) #first 6 rows
+summary(fc) #summary stats
+str(fc) #structure of data
+dim(fc) #dimensions (number of rowns and columns)
+```
+
+#Understand the variables individually
+```{r}
+#country -- spatial 
+#create small data set with some countries to place markers on map
+  exam_1 <- tribble(
+  ~place, ~long, ~lat, 
+  "Argentina", 38.4161, 63.6167, 
+  "Austrailia", 25.2744, 133.7751, 
+  "Liberia", 6.4281, 9.4295, 
+  "Bangladesh", 23.6850, 90.3563 
+)
+
+#create map
+leaflet(data = exam_1) |> 
+  addTiles() |> 
+  addMarkers()
+
+```
+```{r}
+#food category
+#|fig-height: 22
+#|fig-width: 22
+
+ggplot(fc, aes(x = food_category)) +
+  geom_bar()
+```
+```{r}
+#consumption
+ggplot(fc, aes(y = consumption)) +
+  geom_boxplot()
+```
+#Understand overall food consumption 
+```{r}
+#overall food consumption and food category
+ggplot(fc, aes(y = consumption, x = food_category)) +
+  geom_boxplot()
+```
+
+
+```{r}
+#overall food consumption and country
+ggplot(fc, aes(y = consumption, x = country)) +
+  geom_boxplot()
+```
+
+#Answer grand research question, and add 5 concepts of effective visulizations.
+
+```{r}
+#The challenge with this plot is that there are too many countries. It would be helpful to add consumption as the y-axis and then have it stack consumption by country. 
+#| fig-cap: "Bar chart of food category, consumption, and faceted by country."
+#| fig-alt: "Mulitiple bar charts -- one for each country. The x axis is food category and they are proportional to consumption of each food category."
+ggplot(fc, aes(x = food_category, fill = consumption)) +
+  geom_bar(position="fill")+
+  facet_wrap(~country)+
+  scale_fill_viridis_c()  +
+  labs(x = "Food Category", y = "Count", title = "Consumption of Food Category by Country")  
+```
+
+```{r}
+#The challenge with this plot is that there are too many countries for a density plot. 
+#| fig-cap: "Density plots of food consumption by country faceted by food category."
+#| fig-alt: "Multiple density plots -- one for each food category. The x axis is consumption and the y axis is density. The density plots are overlapped by country. "
+ggplot(fc, aes(x = consumption, fill = country)) + 
+  geom_density(alpha = 0.5)+
+  facet_wrap(~food_category)+
+  scale_fill_viridis_d()  +
+  labs(x = "Consumption", y = "Density", title = "Consumption of Food Categories in Different Countries")  
+```
+
+#As of now, none of these are appropriate because there are too many obsevrations. But the most approproate visulization is the one that gives you a clear view of your outcome variable. 
+

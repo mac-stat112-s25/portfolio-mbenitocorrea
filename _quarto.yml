@@ -4,7 +4,7 @@ project:
 
 book:
   title: "COMP/STAT112 Notebook"
-  author: "Your Name Here"
+  author: "Maria Benito"
   date: today
   reader-mode: true
   page-navigation: true
@@ -13,7 +13,7 @@ book:
   
   
   sidebar:
-    title: "Your Name Here"
+    title: "Maria Benito"
     collapse-level: 2
     style: "docked"
     pinned: true
@@ -22,6 +22,11 @@ book:
   
   chapters:
     - index.qmd
+    
+    - part: "Summary"
+      chapters: 
+      - ica/summary-Multivariate Visualizations.qmd
+      - ica/wrangling.qmd
 
     - part: "Best Work"
       chapters: 
@@ -30,6 +35,8 @@ book:
       - bw/bw-tri.qmd
       - bw/bw-quad.qmd
       - bw/bw-spatial.qmd
+      - bw/bw-exam1.qmd
+      - ica/bw-foodConsumption2.qmd
 
     - part: "In-class Activities"
       chapters: 
@@ -38,6 +45,11 @@ book:
       - ica/ica-multi.qmd
       - ica/ica-spatial.qmd
       - ica/ica-effective.qmd
+      - ica/ica-wrangling.qmd
+      - ica/ica - factors.qmd
+      - ica/ica-strings.qmd
+      - ica/ica-dataImport.qmd
+    
 
 format:
   html:

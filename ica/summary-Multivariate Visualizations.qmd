@@ -1,0 +1,19 @@
+---
+title: "summary-Multivariate Visualizations"
+format: html
+---
+
+##Multivariate Visulizations Summary Sheet
+#Page 1
+![](page1multi.png)
+
+
+#Page 2
+![](page2multi.png)
+
+
+#Page 3
+![](page3multi.png)
+
+#Page 4
+![](page4multi.png)

@@ -1,0 +1,97 @@
+---
+title: "bw-foodConsumption2"
+format: html
+---
+
+#Load packages 
+```{r}
+library(tidytuesdayR)
+library(tidyverse)
+library(rnaturalearth)
+library(sf)
+```
+
+#Load data
+```{r}
+tuesdata <-tt_load('2020-02-18')
+fc <- tuesdata$food_consumption
+```
+
+
+##Research question 1: What are the top 5 countries by food consumption?
+#Create sub data
+```{r}
+question1 <- fc |>
+  group_by(country) |>
+  summarise(avg_consumption = mean(consumption))|>
+  arrange(desc(avg_consumption))|>
+  slice_head(n = 5)
+```
+
+#Create Viz
+```{r}
+#| fig-cap: "The top 5 countries that consume the most food (all food groups) are Albania, Finland, Lithuania, Netherlands, and Sweden."
+#| fig-alt: "This plot shows the average consumption of all food groups. The top 5 countries that consume the most food (all food groups) are Albania, Finland, Lithuania, Netherlands, and Sweden."
+ggplot(question1, aes(x = country, y = avg_consumption)) + 
+  geom_col()+
+  labs(x = "Country", y = "Average Consumption of all Food Groups", title = "The Top 5 Countries that Consume the Most Food")  
+```
+#Answer to research question: The top 5 countries that consume the most food (all food groups) are Albania, Finland, Lithuania, Netherlands, and Sweden. 
+
+##Research question 2: What are the top 5 countries that consume each food group?
+#Create sub data
+```{r}
+question2 <- fc |>
+  group_by(food_category) |>
+  arrange(consumption) |>
+  slice_max(consumption, n =  5)
+```
+
+
+#Create Viz
+```{r}
+#| fig-cap: "Average Consumption of Food Group."
+#| fig-alt: "This is a faceted bar plot with each facet being a different food group. The bars in each facet/graph represent the top 5 countries that have the highest consumption of each food group. It is hard to tell what countries are the top 5 consumers of each food group with elements of this graph."
+
+ggplot(question2, aes(x = country, y = consumption)) + 
+  geom_col()+
+  facet_wrap(~food_category)+
+  labs(x = "Country", y = "Average Consumption of Food Group", title = "The Top 5 Countries that Consume Each Food Group") 
+
+```
+#Answer to research question: It is hard to tell with elements of this graph. 
+
+
+##Research Question 3
+#What does the consumption of each food look like among countries?
+```{r}
+#| fig-cap: "Consumption of Each Food Group Across the World."
+#| fig-alt: "This is a faceted map with each facet being a different food group. Each facet contains a world map that shows how much that food group is consumed."
+
+ne_countries(returnclass = "sf") |>
+  select(name, geometry) |> 
+  mutate(name = ifelse(name == "United States of America", "USA", name))|>
+  mutate(name = ifelse(name == "Bosnia and Herz.", "Bosnia and Herzegovina", name))|>
+  mutate(name = ifelse(name == "Czechia", "Czech Republic", name)) |>
+  mutate(name = ifelse(name == "Taiwan", "Taiwan. ROC", name)) |>
+  left_join(fc |> select (-co2_emmission),
+            join_by(name == country)) |>
+  pivot_wider(names_from = food_category,
+              values_from = consumption) |>
+  select(-"NA")|>
+  pivot_longer(cols = c(-name, -geometry),
+               names_to = "food_category",
+               values_to = "consumption") |>
+ggplot() +
+geom_sf(aes(fill = consumption)) + 
+facet_wrap(~food_category) +
+theme(legend.position = "bottom") +
+labs(title = "Consumption of Each Food Group Across the World") +
+scale_color_viridis_d() 
+              
+  
+  
+```
+
+
+

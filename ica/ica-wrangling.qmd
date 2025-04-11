@@ -1,0 +1,44 @@
+---
+title: "ica-wrangling"
+format: html
+---
+
+```{r}
+# Load tidyverse & data
+library(tidyverse)
+elections <- read.csv("https://mac-stat.github.io/data/election_2020_county.csv")
+```
+```{r}
+# Get a background map
+library(socviz)
+data(county_map)
+
+# Make a choropleth map
+library(RColorBrewer)  # For the color scale
+library(ggthemes) # For theme_map
+elections |> 
+  mutate(county_fips = as.character(county_fips)) |> 
+  mutate(county_fips = 
+           ifelse(nchar(county_fips) == 4, paste0("0", county_fips), county_fips)) |> 
+  ggplot(aes(map_id = county_fips, fill = cut(repub_pct_20, breaks = seq(0, 100, by = 10)))) +
+    geom_map(map = county_map) +
+    scale_fill_manual(values = rev(brewer.pal(10, "RdBu")), name = "% Republican") +
+    expand_limits(x = county_map$long, y = county_map$lat)  + 
+    theme_map() +
+    theme(legend.position = "right") + 
+    coord_equal()
+
+```
+#Example 2: Select Columns:
+
+
+```{r}
+#Using Select
+select(elections, c(state_name, county_name, dem_pct_20, dem_pct_16))
+```
+```{r}
+#Using the pipe function
+elections |> 
+  select(state_name, county_name, dem_pct_20, dem_pct_16)
+```
+

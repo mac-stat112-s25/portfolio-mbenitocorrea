@@ -1,0 +1,85 @@
+---
+title: "soloProject"
+format: html
+---
+
+#install packages
+```{r}
+library(sf)
+library(ggplot2)
+library(tidyverse)
+```
+
+#download shape file
+```{r}
+minnesota <- read_sf("~/Downloads/stat 112/tl_2023_27_tract/tl_2023_27_tract.shp")
+```
+
+
+#map the plot
+```{r}
+ggplot() +
+  geom_sf(data = minnesota)
+```
+
+#load in population data
+```{r}
+population_data <- read_csv("~/Downloads/stat 112/data/mn_county_population_data.csv")
+```
+
+#load in data set with FPS codes and county name to link the shp file "minnesota" (FPS code) with "poulation_data" (county name)
+```{r}
+fps_codes <- read_csv("~/Downloads/stat 112/data/county_fips_master.csv")
+```
+
+#clean fps_codes data 
+```{r}
+#filter MN and clean the fps codes
+fps_codes_clean  <- fps_codes |> 
+   filter(state_name == "Minnesota") |>
+   mutate (fps_new = as.character(fips)) |>
+   mutate (fps_new = str_sub(fps_new, 3)) |>
+   mutate(long_name = str_replace(long_name, " County MN", ""))
+
+```
+
+
+#join the fps clean data with minnesota shp file
+```{r}
+fpsAndMinnesota  <- minnesota |> 
+  select(geometry, COUNTYFP) |> 
+  left_join(fps_codes_clean |>  
+              select(fps_new, county_name), join_by(COUNTYFP == fps_new))
+  
+
+```
+
+#join the population_data with the fpsAndMinnesota
+```{r}
+populationFpsAndMinnesota <-fpsAndMinnesota |>
+  mutate(county_name = str_replace(county_name, " County", "")) |>
+  left_join (population_data |> 
+               select(Population,`Geography Name`),
+               join_by (county_name ==`Geography Name`)) 
+```
+
+
+
+```{r}
+ggplot() + 
+  geom_sf(data = populationFpsAndMinnesota,aes(fill = Population)) + 
+  scale_fill_viridis_c()
+
+
+
+```
+
+
+
+#analysis
+```{r}
+#Higher population in the center of the state (MN and St Paul)
+```
+
+
+

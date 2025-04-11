@@ -1,0 +1,36 @@
+---
+title: "ica-dataImport"
+format: html
+---
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+imdb_messy <- read_csv("~/Downloads/stat 112/data/imdb_5000_messy.csv") 
+str(imdb_messy)
+```
+
+```{r}
+#Check what your working directory is inside this qmd:
+getwd()
+```
+```{r}
+#Next, check what the working directory is for the console by typing getwd() in the console. This is probably different, meaning that the relative file paths that will work in your qmd won’t work in the console! 
+
+#result:    "/Users/mariabenito-correa/Documents/GitHub/portfolio-mbenitocorrea"
+```
+
+
+```{r}
+#Relative file path:
+#my_data2 <- read_csv("../data/imdb_5000_messy.csv") 
+```
+```{r}
+imdb_messy |>
+ mutate(across(where(is.character), as.factor)) |>  # convert characters to factors in order to summarize
+ summary()
+```
+
