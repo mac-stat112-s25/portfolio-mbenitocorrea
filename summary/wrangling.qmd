@@ -1,0 +1,21 @@
+---
+title: "wrangling"
+format: html
+---
+
+## Wrangling Summary Sheet
+
+#Page 1
+
+
+![](page1downloads.png)
+
+#Page 2 \#![](page2downloads.png)
+
+# Page 3
+
+\#![](page3downloads.png)
+
+# Page 4
+
+![](page4downloads.png)

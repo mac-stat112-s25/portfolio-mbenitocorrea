@@ -49,26 +49,39 @@ leaflet(data = exam_1) |>
 #|fig-height: 22
 #|fig-width: 22
 
+#| fig-cap: "Bar chart of Food Categories."
+#| fig-alt: "This bar chart shows the coutns fo the food categories. They include beef, eggs, poultry, milk, wheat, etc. "
+
 ggplot(fc, aes(x = food_category)) +
-  geom_bar()
+  geom_bar() +
+labs( x = "Food Category", y = "Count", title = "Food Category") 
 ```
 ```{r}
 #consumption
+#| fig-cap: "Box plot of overall food consumption."
+#| fig-alt: "This is a box plot of overall food consumption. Mean food consumption is around 15 units."
 ggplot(fc, aes(y = consumption)) +
-  geom_boxplot()
+  geom_boxplot() +
+labs( y = "Consumption of all foods", title = "Consumption of Food") 
 ```
 #Understand overall food consumption 
 ```{r}
 #overall food consumption and food category
+#| fig-cap: "box plot with food categories on the x axis and consumption on the y axis."
+#| fig-alt: "This is a box plot with food category on the x axis and consumption on the y axis. Food categories include wheat, dairy, beef, eggs, pork, poultry, and more. Eggs and beaf are amongs some of the lowest foods consumed. Wheat is one of the highest. " 
 ggplot(fc, aes(y = consumption, x = food_category)) +
-  geom_boxplot()
+  geom_boxplot() +
+labs(x = "Food Category", y = "Consumption", title = "Consumption of Food by Category") 
 ```
 
 
 ```{r}
 #overall food consumption and country
+#| fig-cap: "box plot with countries on the x axis and consumption on the y axis."
+#| fig-alt: "This is a box plot with countries on the x axis and consumption on the y axis. Most countries' mean consumption of food is under 100 units but among all countries there are many outliers that are higher than 400 units of food consumed." 
 ggplot(fc, aes(y = consumption, x = country)) +
-  geom_boxplot()
+  geom_boxplot()+
+labs(x = "Country", y = "Consumption", title = "Consumption of Food by Country") 
 ```
 
 #Answer grand research question, and add 5 concepts of effective visulizations.

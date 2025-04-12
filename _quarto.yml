@@ -25,8 +25,8 @@ book:
     
     - part: "Summary"
       chapters: 
-      - ica/summary-Multivariate Visualizations.qmd
-      - ica/wrangling.qmd
+      - summary/summary-Multivariate Visualizations.qmd
+      - summary/wrangling.qmd
 
     - part: "Best Work"
       chapters: 
